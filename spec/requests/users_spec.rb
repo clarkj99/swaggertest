@@ -84,7 +84,6 @@ RSpec.describe "/users", type: :request do
         post users_url,
              params: { user: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
       end
     end
   end
@@ -92,7 +91,9 @@ RSpec.describe "/users", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { email: "clark@updatedemail.com",
+          name: "Mark Johnson",
+          github_username: "clarkj99" }
       }
 
       it "updates the requested user" do
@@ -100,15 +101,16 @@ RSpec.describe "/users", type: :request do
         patch user_url(user),
               params: { user: invalid_attributes }, headers: valid_headers, as: :json
         user.reload
-        skip("Add assertions for updated state")
+        expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it "renders a JSON response with the user" do
         user = User.create! valid_attributes
         patch user_url(user),
-              params: { user: invalid_attributes }, headers: valid_headers, as: :json
+              params: { user: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq("application/json")
+        expect(JSON.parse(response.body)["name"]).to eq(new_attributes[:name])
+        expect(JSON.parse(response.body)["email"]).to eq(new_attributes[:email])
       end
     end
 
@@ -118,7 +120,6 @@ RSpec.describe "/users", type: :request do
         patch user_url(user),
               params: { user: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
       end
     end
   end
