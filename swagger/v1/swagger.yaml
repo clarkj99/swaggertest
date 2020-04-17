@@ -1,11 +1,94 @@
 ---
 openapi: 3.0.1
 info:
-  title: API V1
+  title: FIXD Challenge API
   version: v1
-paths: {}
+paths:
+  "/users":
+    post:
+      summary: Create a User
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: user created
+          content: {}
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+                github_username:
+                  type: string
+                registered_at:
+                  type: datetime
+              required:
+              - email
+              - name
+              example:
+                email: clovis@example.net
+                name: John Justice Wheeler
+                github_username: mygithub
+                registered_at: '2017-09-22T12:13:05.000Z'
+  "/users/{id}":
+    get:
+      summary: Retrieve a single user
+      tags:
+      - User
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: user found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                  name:
+                    type: string
+                  registered_at:
+                    type: datetime
+                required:
+                - id
+                - email
+                - name
+                - registered_at
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                  name:
+                    type: string
+                  registered_at:
+                    type: datetime
+                required:
+                - id
+                - email
+                - name
+                - registered_at
+        '404':
+          description: user not found
+          content: {}
 servers:
-- url: https://{defaultHost}
+- url: http://{defaultHost}
   variables:
     defaultHost:
-      default: www.example.com
+      default: localhost:3000

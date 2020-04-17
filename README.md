@@ -9,3 +9,6 @@
 - `rail g rswag:ap:install`.
 
 - `rails g scaffold api/vi/users email name github_user registered_at:datetime`
+
+- edit controller to use find_by instead of find
+- add integration for swagger documentation
